@@ -6,15 +6,8 @@ import sys, os, shutil, platform, requests, zipfile
 if os.path.exists("servers"): shutil.rmtree("servers")
 
 def main(args):
-    if len(args) < 2: displayHelp() 
-    else:
-        osType = platform.system()
-        arg = args[1][0:2]
-    
-        if   arg == "-m": setupMC(osType)
-        elif arg == "-s": setupST(osType)
-        elif arg == "-b": setupMC(osType), setupST(osType)
-        else:             displayHelp()
+    osType = platform.system()
+    setupMC(osType)
         
 def setupMC(osType):
     #make folders
@@ -59,10 +52,6 @@ def setupMCLin(folder):
     #create setup file by curl
     print("downloading minecraft setup.py file...")
     #todo
-    
-def setupST(osType):
-    folder = "./servers/steam/"
-    print("Steam is not yet supported")
     
 def displayHelp():
     print("python setup.py -m(inecraft)|-s(team)|-b(oth)")
