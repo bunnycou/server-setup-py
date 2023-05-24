@@ -11,7 +11,7 @@ def main(args):
         
 def setupMC(osType):
     #make folders
-    folder = "./servers/minecraft/"
+    folder = "./servers/"
     makeFolder(folder)
     
     #create files based on os version
