@@ -61,7 +61,7 @@ def setupMCLin(folder):
     with open(f"{folder}/setup.py", "wb") as f:
         f.write(response.content)
     
-def displayHelp():
+def displayHelp(): # unused until I implement steam setup
     print("python setup.py -m(inecraft)|-s(team)|-b(oth)")
     
 def makeFolder(path):

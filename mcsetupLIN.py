@@ -1,4 +1,4 @@
-import sys, os, requests, shutil
+import sys, os, requests, shutil, json
 
 # python setup.py -pa(per)|-pu(rpur)|-f(abric) -v [version number] -n [name]
 def main(args):
@@ -22,8 +22,27 @@ def main(args):
         if srvType == "pu": setupPurpur(ver, name)
         if srvType == "f" : setupFabric(ver, name)
         
-def setupPaper(ver, name):
-    print("Paper not implemented")
+def setupPaper(ver, name): #download api v2 sucks
+    print("downloading paper...")
+    response = requests.get(
+        f"https://api.papermc.io/v2/projects/paper/versions/{ver}/builds",
+    ) 
+    with json.loads(response.content) as js:
+        build = js["builds"][-1]["build"]
+        
+    response2 = requests.get(
+        f"https://api.papermc.io/v2/projects/paper/versions/{ver}/builds/{build}/downloads/paper-{ver}-{build}.jar",
+    ) 
+    with open(f"{name}/paper-{ver}.jar", "wb") as f:
+        f.write(response2.content)    
+    
+    print("creating base files...")
+    makeFiles(name, ver, "paper")
+    #make both executable
+    os.system(f"cd ./{name} && chmod +x start && chmod +x tmuxstart")
+    print("running once to generate files...")
+    os.system(f"cd ./{name} && java -jar paper-{ver}.jar")
+    print("Make sure to accept the eula!")
     
 def setupPurpur(ver, name):
     print("downloading purpur...")
@@ -41,7 +60,20 @@ def setupPurpur(ver, name):
     print("Make sure to accept the eula!")
 
 def setupFabric(ver, name):
-    print("Fabric not implemented")
+    loadver = input("Input fabric loader version (such as 0.14.19): ")
+    print("downloading fabric...")
+    response = requests.get(
+        f"https://meta.fabricmc.net/v2/versions/loader/{ver}/{loadver}/0.11.2/server/jar", # will have to be updated manually occasionally unfortunately...
+    ) 
+    with open(f"{name}/fabric-{ver}.jar", "wb") as f:
+        f.write(response.content)
+    print("creating base files...")
+    makeFiles(name, ver, "fabric")
+    #make both executable
+    os.system(f"cd ./{name} && chmod +x start && chmod +x tmuxstart")
+    print("running once to generate files...")
+    os.system(f"cd ./{name} && java -jar fabric-{ver}.jar")
+    print("Make sure to accept the eula!\nDon't forget to add your mods and the fabric API mod in the mods folder")
     
     
 def makeFolder(path):
