@@ -3,6 +3,7 @@ import sys, os, requests, shutil, json
 # python setup.py -pa(per)|-pu(rpur)|-f(abric) -v [version number] -n [name]
 def main(args):
     sampleText = "python setup.py -pa(per)|-pu(rpur)|-f(abric) -v [version number] -n [name-NO-SPACES]"
+    srvType = "na"
     if len(args) != 6: 
         print("Proper usage is...\n"+sampleText)
     else:
@@ -19,16 +20,17 @@ def main(args):
         makeFolder(name)
         
         if srvType == "pa": setupPaper(ver, name)
-        if srvType == "pu": setupPurpur(ver, name)
-        if srvType == "f" : setupFabric(ver, name)
+        elif srvType == "pu": setupPurpur(ver, name)
+        elif srvType == "f" : setupFabric(ver, name)
+        else: print("Invalid Server Type")
         
 def setupPaper(ver, name): #download api v2 sucks
     print("downloading paper...")
     response = requests.get(
         f"https://api.papermc.io/v2/projects/paper/versions/{ver}/builds",
     ) 
-    with json.loads(response.content) as js:
-        build = js["builds"][-1]["build"]
+    js = json.loads(response.content)
+    build = js["builds"][-1]["build"]
         
     response2 = requests.get(
         f"https://api.papermc.io/v2/projects/paper/versions/{ver}/builds/{build}/downloads/paper-{ver}-{build}.jar",
