@@ -1,4 +1,5 @@
 import sys, os, shutil, platform, requests, zipfile
+from random import randint
 
 # FOR TESTING
 # REMOVES SERVER FOLDER EVERY RUN
@@ -40,7 +41,7 @@ def setupMCWin(folder):
     #--- download mcsetupwin.py
     print("downloading minecraft setup.py file...")
     response = requests.get(
-        "https://raw.githubusercontent.com/bunnycou/server-setup-py/main/mcsetupWIN.py",
+        f"https://raw.githubusercontent.com/bunnycou/server-setup-py/main/mcsetupWIN.py?{randint(0,999)}", # rand int is to make sure curl grabs the most recent version
     ) 
     with open(f"{folder}\\setup.py", "wb") as f:
         f.write(response.content)
@@ -53,7 +54,7 @@ def setupMCLin(folder):
     #create setup file by curl
     print("downloading minecraft setup.py file...")
     response = requests.get(
-        "https://raw.githubusercontent.com/bunnycou/server-setup-py/main/mcsetupLIN.py",
+        f"https://raw.githubusercontent.com/bunnycou/server-setup-py/main/mcsetupLIN.py?{randint(0,999)}",
     ) 
     with open(f"{folder}/setup.py", "wb") as f:
         f.write(response.content)
