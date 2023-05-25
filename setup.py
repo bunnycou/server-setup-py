@@ -47,6 +47,8 @@ def setupMCWin(folder):
         f.write(response.content)
     
 def setupMCLin(folder):
+    print("Setting up for Linux...")
+    
     #get dependencies installed
     print("installing dependencies...")
     os.system("sudo apt update && sudo apt upgrade && sudo apt install openjdk-17-jre-headless")
