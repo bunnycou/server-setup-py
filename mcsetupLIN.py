@@ -58,6 +58,6 @@ def makeFiles(path, ver, type):
     with open(f"{path}/tmuxstart", "+w") as f:
         f.write(f"tmux new -d -n{path} ./start")
     #make both executable
-    os.system("chmod +x start && chmod +x tmuxstart")
+    os.system(f"cd ./{path} && chmod +x start && chmod +x tmuxstart")
 
 main(sys.argv)
