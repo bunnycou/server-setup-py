@@ -55,7 +55,7 @@ def setupMCLin(folder):
     response = requests.get(
         "https://raw.githubusercontent.com/bunnycou/server-setup-py/main/mcsetupLIN.py",
     ) 
-    with open(f"{folder}\\setup.py", "+w") as f:
+    with open(f"{folder}\\setup.py", "wb") as f:
         f.write(response.content)
     
 def displayHelp():
