@@ -2,8 +2,7 @@ import sys, os, shutil, platform, requests, zipfile
 
 # FOR TESTING
 # REMOVES SERVER FOLDER EVERY RUN
-# might leave it in to help eliminate errors... (please don't)
-if os.path.exists("servers"): shutil.rmtree("servers")
+# if os.path.exists("servers"): shutil.rmtree("servers")
 
 def main(args):
     osType = platform.system()
@@ -20,29 +19,31 @@ def setupMC(osType):
     elif osType == "Darwin": print("MacOS is not Supported")
 
 def setupMCWin(folder):
-    # ask if jdk needs to be installed and install if needed
-    instJDK = input("Install OpenJDK 17? (Y/N): ")
-    if instJDK != "": instJDK == instJDK.lower()[0]
-    if instJDK == "n": print("skipping jdk installation...")
-    else:
-        #--- donwload zip
-        print("downloading OpenJDK 17... (this can take a few minutes)")
-        response = requests.get(
-            'https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_windows-x64_bin.zip',
-        ) 
-        with open('openjdk17.zip', 'wb') as f:
-            f.write(response.content)
-        #--- unpack zip
-        print("unpacking OpenJDK 17...")
-        with zipfile.ZipFile("openjdk17.zip", "r") as zip:
-            zip.extractall("./servers/")
-        #--- cleanup zip
-        print("cleaning up files...")
-        os.remove("openjdk17.zip")
+    print("Setting up for Windows")
     
+    #--- download zip
+    print("downloading OpenJDK 17... (this can take a few minutes)")
+    response = requests.get(
+        "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_windows-x64_bin.zip",
+    ) 
+    with open("openjdk17.zip", "wb") as f:
+        f.write(response.content)
+    #--- unpack zip
+    print("unpacking OpenJDK 17...")
+    with zipfile.ZipFile("openjdk17.zip", "r") as zip:
+        zip.extractall("./servers/")
+    os.rename("jdk-17.0.2", "jdk")
+    #--- cleanup zip
+    print("cleaning up files...")
+    os.remove("openjdk17.zip")
+    
+    #--- download mcsetupwin.py
     print("downloading minecraft setup.py file...")
-    #todo
-        
+    response = requests.get(
+        "pending...",
+    ) 
+    with open(f"{folder}\\setup.py", "+w") as f:
+        f.write(response.content)
     
 def setupMCLin(folder):
     #get dependencies installed
