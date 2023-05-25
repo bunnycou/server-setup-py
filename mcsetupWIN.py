@@ -48,13 +48,13 @@ def makeFolder(path):
         
 def makeFiles(path, ver, type):
     with open(f"{path}\\start.bat", "+w") as f:
-        f.writelines([
-            f"@echo off\n",
-            f"title {path}-{ver}\n",
-            ":start\n",
-            f"..\\jdk\\bin\\java -Xmx4G -jar {type}-{ver}.jar --nogui\n",
-            "echo server crashed! restarting...\n",
-            "goto start"
-            ])
+        f.write(
+f"""@echo off
+title {path}-{ver}
+:start\n",
+..\\jdk\\bin\\java -Xmx4G -jar {type}-{ver}.jar --nogui
+echo server crashed! restarting...
+goto start"""
+            )
 
 main(sys.argv)

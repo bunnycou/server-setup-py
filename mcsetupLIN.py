@@ -34,6 +34,8 @@ def setupPurpur(ver, name):
         f.write(response.content)
     print("creating base files...")
     makeFiles(name, ver, "purpur")
+    #make both executable
+    os.system(f"cd ./{name} && chmod +x start && chmod +x tmuxstart")
     print("running once to generate files...")
     os.system(f"cd ./{name} && java -jar purpur-{ver}.jar")
     print("Make sure to accept the eula!")
@@ -48,16 +50,16 @@ def makeFolder(path):
         
 def makeFiles(path, ver, type):
     with open(f"{path}/start", "+w") as f:
-        f.writelines([
-            "while true\n",
-            "do\n",
-            f"java -Xmx4G -jar {type}-{ver}.jar\n",
-            "echo server crashed! restarting...\n",
-            "done"
-            ])
+        f.write(
+f"""while true
+do
+java -Xmx4G -jar {type}-{ver}.jar
+echo server crashed! restarting in 5 seconds...
+sleep 5s
+done"""
+            ) # requires delay otherwise it will permanently restart
+        
     with open(f"{path}/tmuxstart", "+w") as f:
-        f.write(f"tmux new -d -n{path} ./start")
-    #make both executable
-    os.system(f"cd ./{path} && chmod +x start && chmod +x tmuxstart")
+        f.write(f"tmux new -d -s{path} ./start")
 
 main(sys.argv)
