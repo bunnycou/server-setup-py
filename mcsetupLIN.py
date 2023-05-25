@@ -35,7 +35,7 @@ def setupPurpur(ver, name):
     print("creating base files...")
     makeFiles(name, ver, "purpur")
     print("running once to generate files...")
-    os.system(f"cd .\\{name} && java -jar purpur-{ver}.jar")
+    os.system(f"cd ./{name} && java -jar purpur-{ver}.jar")
     print("Make sure to accept the eula!")
 
 def setupFabric(ver, name):
@@ -47,7 +47,7 @@ def makeFolder(path):
     else: shutil.rmtree(path), os.makedirs(path)
         
 def makeFiles(path, ver, type):
-    with open(f"{path}\\start", "+w") as f:
+    with open(f"{path}/start", "+w") as f:
         f.writelines([
             "while true\n",
             "do\n",
@@ -55,8 +55,8 @@ def makeFiles(path, ver, type):
             "echo server crashed! restarting...\n",
             "done"
             ])
-    with open(f"{path}\\tmuxstart", "+w") as f:
-        f.write(f"tmux new -d -n{path} .\\start")
+    with open(f"{path}/tmuxstart", "+w") as f:
+        f.write(f"tmux new -d -n{path} ./start")
     #make both executable
     os.system("chmod +x start && chmod +x tmuxstart")
 
