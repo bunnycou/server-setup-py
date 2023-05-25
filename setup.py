@@ -2,7 +2,7 @@ import sys, os, shutil, platform, requests, zipfile
 
 # FOR TESTING
 # REMOVES SERVER FOLDER EVERY RUN
-# if os.path.exists("servers"): shutil.rmtree("servers")
+if os.path.exists("servers"): shutil.rmtree("servers")
 
 def main(args):
     osType = platform.system()
@@ -32,7 +32,7 @@ def setupMCWin(folder):
     print("unpacking OpenJDK 17...")
     with zipfile.ZipFile("openjdk17.zip", "r") as zip:
         zip.extractall("./servers/")
-    os.rename("jdk-17.0.2", "jdk")
+    os.rename("./servers/jdk-17.0.2/", "./servers/jdk/")
     #--- cleanup zip
     print("cleaning up files...")
     os.remove("openjdk17.zip")
@@ -40,9 +40,9 @@ def setupMCWin(folder):
     #--- download mcsetupwin.py
     print("downloading minecraft setup.py file...")
     response = requests.get(
-        "pending...",
+        "https://raw.githubusercontent.com/bunnycou/server-setup-py/main/mcsetupWIN.py",
     ) 
-    with open(f"{folder}\\setup.py", "+w") as f:
+    with open(f"{folder}\\setup.py", "wb") as f:
         f.write(response.content)
     
 def setupMCLin(folder):
@@ -52,7 +52,11 @@ def setupMCLin(folder):
 
     #create setup file by curl
     print("downloading minecraft setup.py file...")
-    #todo
+    response = requests.get(
+        "https://raw.githubusercontent.com/bunnycou/server-setup-py/main/mcsetupLIN.py",
+    ) 
+    with open(f"{folder}\\setup.py", "+w") as f:
+        f.write(response.content)
     
 def displayHelp():
     print("python setup.py -m(inecraft)|-s(team)|-b(oth)")
