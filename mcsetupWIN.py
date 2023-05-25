@@ -52,7 +52,7 @@ def makeFiles(path, ver, type):
             f"@echo off\n",
             f"title {path}-{ver}\n",
             ":start\n",
-            f"..\\jdk\\bin\\java -Xmx4G --add-modules=jdk.incubator.vector -jar {type}-{ver}.jar --nogui\n",
+            f"..\\jdk\\bin\\java -Xmx4G -jar {type}-{ver}.jar --nogui\n",
             "echo server crashed! restarting...\n",
             "goto start"
             ])
